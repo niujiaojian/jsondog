@@ -17,7 +17,16 @@
       <JsonOutput :value="output" filename="result.json" />
     </template>
     <template #status>
-      <ErrorReport :error="error" />
+      <ErrorReport :error="jsonError" />
+      <div v-if="queryError" class="mt-3 rounded-lg border border-orange-400/40 bg-orange-50 dark:bg-orange-900/20 p-4">
+        <div class="flex items-start gap-2">
+          <Icon name="mdi:alert-circle-outline" class="text-orange-500 text-xl shrink-0 mt-0.5" />
+          <div class="text-sm">
+            <p class="font-semibold text-orange-600 dark:text-orange-400">查询表达式错误</p>
+            <p class="mt-1 text-gray-700 dark:text-gray-300 font-mono text-xs">{{ queryError }}</p>
+          </div>
+        </div>
+      </div>
       <StatusBar :stats="stats" />
     </template>
   </ToolLayout>
@@ -31,19 +40,25 @@ const expr = ref('$..author')
 const examples = ['$.store.book[*].author', '$..author', '$.store.*', '$..book[?(@.price<30)]', '$.store.book[0].title']
 const samples = ['{"store":{"book":[{"title":"A","price":25},{"title":"B","price":35}],"bicycle":{"color":"red","price":20}}}']
 
+const jsonError = computed(() => {
+  if (!input.value.trim()) return null
+  const j = parse(input.value)
+  return j.ok ? null : j.error
+})
+
 const result = computed(() => {
-  if (!input.value || !expr.value) return { ok: true, value: '', error: null as string | null }
+  if (!input.value || !expr.value) return { value: '', queryError: null as string | null }
+  const j = parse(input.value)
+  if (!j.ok) return { value: '', queryError: null }
   try {
-    const j = parse(input.value)
-    if (!j.ok) return { ok: false, value: '', error: j.error }
     const res = JSONPath.JSONPath({ path: expr.value, json: j.value })
-    return { ok: true, value: JSON.stringify(res, null, 2), error: null }
+    return { value: JSON.stringify(res, null, 2), queryError: null }
   } catch (e: any) {
-    return { ok: false, value: '', error: e?.message || String(e) }
+    return { value: '', queryError: e?.message || String(e) }
   }
 })
-const error = computed(() => result.value.error)
 const output = computed(() => result.value.value)
+const queryError = computed(() => result.value.queryError)
 const { stats } = useJsonStats(input)
 
 const faq = [
