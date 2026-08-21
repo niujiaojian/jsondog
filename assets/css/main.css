@@ -1,0 +1,47 @@
+@import 'element-plus/theme-chalk/dark/css-vars.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+}
+
+html {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+html.dark {
+  background-color: #0D1117;
+  color: #C9D1D9;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #30363D;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #484F58;
+}
+
+textarea, pre {
+  tab-size: 2;
+}

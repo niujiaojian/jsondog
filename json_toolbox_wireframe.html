@@ -1,0 +1,2158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSON Toolbox — Figma 线框图设计文档</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface-2: #1c2333;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-green: #3fb950;
+    --accent-orange: #d29922;
+    --accent-red: #f85149;
+    --accent-purple: #bc8cff;
+    --accent-pink: #ff7b72;
+    --code-bg: #0a0e14;
+    --shadow: 0 8px 24px rgba(0,0,0,0.4);
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ===== Header ===== */
+  .header {
+    background: linear-gradient(135deg, #161b22 0%, #1a2332 50%, #1c2333 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+    background: rgba(22,27,34,0.85);
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    font-weight: 900;
+  }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .header-actions { display: flex; gap: 12px; align-items: center; }
+  .btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .btn-primary:hover { background: #4a90e2; color: #fff; }
+
+  /* ===== Container ===== */
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px;
+  }
+
+  /* ===== Section Title ===== */
+  .section-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .section-subtitle {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+  }
+  .section-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .tag-ia { background: rgba(88,166,255,0.15); color: var(--accent); }
+  .tag-layout { background: rgba(63,185,80,0.15); color: var(--accent-green); }
+  .tag-component { background: rgba(188,140,255,0.15); color: var(--accent-purple); }
+  .tag-flow { background: rgba(210,153,34,0.15); color: var(--accent-orange); }
+  .tag-design { background: rgba(255,123,114,0.15); color: var(--accent-pink); }
+
+  /* ===== IA Tree ===== */
+  .ia-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    margin-bottom: 48px;
+  }
+  .ia-tree {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 2.2;
+  }
+  .ia-tree .level-1 { color: var(--accent); font-weight: 700; }
+  .ia-tree .level-2 { color: var(--accent-green); padding-left: 24px; }
+  .ia-tree .level-3 { color: var(--text-muted); padding-left: 48px; }
+  .ia-tree .level-4 { color: #6e7681; padding-left: 72px; font-size: 13px; }
+
+  /* ===== Wireframe Canvas ===== */
+  .wireframe-section {
+    margin-bottom: 64px;
+  }
+  .wireframe-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .wireframe-label .badge {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  /* ===== Main Editor Wireframe (ASCII-style but visual) ===== */
+  .wf-main {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .wf-titlebar {
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .wf-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .wf-dot.red { background: #ff5f56; }
+  .wf-dot.yellow { background: #ffbd2e; }
+  .wf-dot.green { background: #27c93f; }
+  .wf-titlebar-title {
+    margin-left: 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: monospace;
+  }
+
+  /* Top Toolbar */
+  .wf-toolbar {
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .wf-toolbar-group {
+    display: flex;
+    gap: 4px;
+    padding: 0 8px;
+    border-right: 1px solid var(--border);
+  }
+  .wf-toolbar-group:last-child { border-right: none; }
+  .wf-btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    cursor: default;
+    transition: all 0.15s;
+  }
+  .wf-btn:hover { background: var(--surface); color: var(--text); }
+  .wf-btn.active { background: rgba(88,166,255,0.15); color: var(--accent); border-color: rgba(88,166,255,0.3); }
+  .wf-btn.success { color: var(--accent-green); }
+  .wf-spacer { flex: 1; }
+
+  /* Main Split View */
+  .wf-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 480px;
+  }
+  .wf-pane {
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .wf-pane.left {
+    border-right: 1px solid var(--border);
+  }
+  .wf-pane-header {
+    padding: 8px 16px;
+    background: var(--code-bg);
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .wf-pane-header .tab {
+    padding: 4px 10px;
+    border-radius: 4px 4px 0 0;
+    background: var(--surface);
+    color: var(--accent);
+    font-size: 12px;
+    border: 1px solid var(--border);
+    border-bottom: none;
+  }
+
+  /* Code Area */
+  .wf-code {
+    padding: 16px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    background: var(--code-bg);
+    min-height: 400px;
+    overflow: auto;
+  }
+  .wf-code .line-num {
+    display: inline-block;
+    width: 32px;
+    color: #484f58;
+    text-align: right;
+    margin-right: 12px;
+    user-select: none;
+  }
+  .wf-code .keyword { color: #ff7b72; }
+  .wf-code .string { color: #a5d6ff; }
+  .wf-code .number { color: #79c0ff; }
+  .wf-code .boolean { color: #ffa657; }
+  .wf-code .null { color: #ff7b72; }
+  .wf-code .key { color: #7ee787; }
+  .wf-code .punct { color: #c9d1d9; }
+  .wf-code .comment { color: #8b949e; font-style: italic; }
+  .wf-code .error-line { background: rgba(248,81,73,0.1); border-left: 2px solid var(--accent-red); padding-left: 10px; }
+  .wf-code .error-msg {
+    color: var(--accent-red);
+    font-size: 12px;
+    margin-top: 4px;
+    padding: 4px 8px;
+    background: rgba(248,81,73,0.1);
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  /* Tree View */
+  .wf-tree {
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 2;
+    background: var(--code-bg);
+    min-height: 400px;
+    overflow: auto;
+  }
+  .tree-node { display: flex; align-items: center; gap: 6px; }
+  .tree-toggle { color: var(--text-muted); width: 14px; cursor: default; }
+  .tree-key { color: #7ee787; }
+  .tree-value { color: #a5d6ff; }
+  .tree-value.number { color: #79c0ff; }
+  .tree-value.boolean { color: #ffa657; }
+  .tree-value.null { color: #ff7b72; }
+  .tree-type { color: #484f58; font-size: 11px; margin-left: 6px; }
+  .tree-children { padding-left: 20px; border-left: 1px dashed #21262d; margin-left: 7px; }
+  .tree-copy-btn {
+    margin-left: 8px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    background: var(--surface-2);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    cursor: default;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .tree-node:hover .tree-copy-btn { opacity: 1; }
+
+  /* Status Bar */
+  .wf-statusbar {
+    background: var(--surface-2);
+    border-top: 1px solid var(--border);
+    padding: 6px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+  .status-dot.green { background: var(--accent-green); }
+  .status-dot.red { background: var(--accent-red); }
+  .status-dot.yellow { background: var(--accent-orange); }
+
+  /* ===== Sidebar Navigation Wireframe ===== */
+  .wf-with-sidebar {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 560px;
+  }
+  .wf-sidebar {
+    background: var(--surface-2);
+    border-right: 1px solid var(--border);
+    padding: 16px 0;
+    overflow-y: auto;
+  }
+  .sidebar-section {
+    margin-bottom: 20px;
+  }
+  .sidebar-title {
+    padding: 4px 16px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #484f58;
+    font-weight: 600;
+  }
+  .sidebar-item {
+    padding: 8px 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: default;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+  .sidebar-item:hover { background: rgba(88,166,255,0.05); color: var(--text); }
+  .sidebar-item.active {
+    background: rgba(88,166,255,0.1);
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+  .sidebar-item .icon { font-size: 16px; width: 20px; text-align: center; }
+  .sidebar-item .badge-new {
+    margin-left: auto;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    background: rgba(63,185,80,0.2);
+    color: var(--accent-green);
+  }
+
+  /* ===== Tool Pages Grid ===== */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 16px;
+  }
+  .tool-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    transition: all 0.2s;
+  }
+  .tool-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .tool-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .tool-card-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .tool-card-icon.blue { background: rgba(88,166,255,0.15); }
+  .tool-card-icon.green { background: rgba(63,185,80,0.15); }
+  .tool-card-icon.purple { background: rgba(188,140,255,0.15); }
+  .tool-card-icon.orange { background: rgba(210,153,34,0.15); }
+  .tool-card-icon.red { background: rgba(248,81,73,0.15); }
+  .tool-card-icon.pink { background: rgba(255,123,114,0.15); }
+  .tool-card-title { font-size: 14px; font-weight: 600; color: #fff; }
+  .tool-card-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+  .tool-card-mock {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    font-family: monospace;
+    font-size: 11px;
+    color: #484f58;
+    line-height: 1.6;
+  }
+
+  /* ===== Diff View ===== */
+  .wf-diff {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    min-height: 360px;
+  }
+  .wf-diff-pane {
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .wf-diff-pane:last-child { border-right: none; }
+  .diff-header {
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+  .diff-header.left { background: rgba(248,81,73,0.1); color: var(--accent-red); }
+  .diff-header.middle { background: rgba(63,185,80,0.1); color: var(--accent-green); }
+  .diff-header.right { background: rgba(88,166,255,0.1); color: var(--accent); }
+  .diff-content {
+    padding: 12px;
+    font-family: monospace;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  .diff-line-add { background: rgba(63,185,80,0.15); color: #7ee787; padding: 0 4px; }
+  .diff-line-del { background: rgba(248,81,73,0.15); color: #ff7b72; padding: 0 4px; text-decoration: line-through; }
+  .diff-line-mod { background: rgba(210,153,34,0.15); color: var(--accent-orange); padding: 0 4px; }
+
+  /* ===== Schema Validator View ===== */
+  .wf-schema {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 360px;
+  }
+  .schema-result {
+    padding: 16px;
+    background: var(--code-bg);
+  }
+  .schema-pass {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(63,185,80,0.1);
+    border: 1px solid rgba(63,185,80,0.3);
+    border-radius: 6px;
+    color: var(--accent-green);
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  .schema-error {
+    padding: 10px 12px;
+    background: rgba(248,81,73,0.08);
+    border: 1px solid rgba(248,81,73,0.2);
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-family: monospace;
+  }
+  .schema-error .path { color: var(--accent); }
+  .schema-error .msg { color: var(--accent-red); }
+
+  /* ===== jq Playground View ===== */
+  .wf-jq {
+    display: grid;
+    grid-template-columns: 1fr 200px 1fr;
+    min-height: 360px;
+  }
+  .jq-input, .jq-output {
+    padding: 0;
+    overflow: hidden;
+  }
+  .jq-input { border-right: 1px solid var(--border); }
+  .jq-output { border-left: 1px solid var(--border); }
+  .jq-center {
+    background: var(--surface-2);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .jq-expr-input {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: monospace;
+    font-size: 13px;
+    color: var(--accent-green);
+  }
+  .jq-expr-input::placeholder { color: #484f58; }
+  .jq-examples {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .jq-example-chip {
+    padding: 6px 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 11px;
+    font-family: monospace;
+    color: var(--text-muted);
+    cursor: default;
+    transition: all 0.15s;
+  }
+  .jq-example-chip:hover { border-color: var(--accent-green); color: var(--accent-green); }
+
+  /* ===== Settings / Preferences Page ===== */
+  .wf-settings {
+    padding: 24px;
+    max-width: 600px;
+  }
+  .settings-group {
+    margin-bottom: 28px;
+  }
+  .settings-group-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+  .settings-row label { font-size: 13px; color: var(--text-muted); }
+  .settings-row .hint { font-size: 11px; color: #484f58; margin-top: 2px; }
+  .toggle {
+    width: 40px; height: 22px;
+    background: var(--border);
+    border-radius: 11px;
+    position: relative;
+    cursor: default;
+    transition: background 0.2s;
+  }
+  .toggle.on { background: var(--accent); }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    top: 2px; left: 2px;
+    transition: transform 0.2s;
+  }
+  .toggle.on::after { transform: translateX(18px); }
+  .select-mock {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--text);
+    min-width: 120px;
+  }
+
+  /* ===== Command Palette ===== */
+  .wf-cmdk {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  .cmdk-input {
+    width: 100%;
+    padding: 16px 20px;
+    background: var(--surface-2);
+    border: none;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    color: #fff;
+    outline: none;
+  }
+  .cmdk-input::placeholder { color: var(--text-muted); }
+  .cmdk-list { max-height: 320px; overflow-y: auto; }
+  .cmdk-group-title {
+    padding: 8px 20px 4px;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #484f58;
+    font-weight: 600;
+  }
+  .cmdk-item {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--text);
+    cursor: default;
+    transition: background 0.1s;
+  }
+  .cmdk-item:hover, .cmdk-item.selected { background: rgba(88,166,255,0.1); }
+  .cmdk-item .cmdk-icon { font-size: 16px; width: 20px; text-align: center; }
+  .cmdk-item .cmdk-shortcut {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: monospace;
+    padding: 2px 6px;
+    background: var(--surface-2);
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  /* ===== Toast / Notification ===== */
+  .toast-mock {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    box-shadow: var(--shadow);
+    z-index: 200;
+  }
+  .toast-mock.success { border-left: 3px solid var(--accent-green); }
+  .toast-mock.error { border-left: 3px solid var(--accent-red); }
+  .toast-mock.info { border-left: 3px solid var(--accent); }
+
+  /* ===== Annotation Labels ===== */
+  .annot-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 24px;
+    align-items: start;
+  }
+  .annot-list {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .annot-item {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .annot-item:last-child { border-bottom: none; }
+  .annot-num {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .annot-content { flex: 1; }
+  .annot-content .title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+  .annot-content .desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 900px) {
+    .container { padding: 20px; }
+    .wf-split { grid-template-columns: 1fr; }
+    .wf-split .wf-pane.left { border-right: none; border-bottom: 1px solid var(--border); }
+    .wf-with-sidebar { grid-template-columns: 1fr; }
+    .wf-sidebar { display: none; }
+    .tool-grid { grid-template-columns: 1fr; }
+    .wf-diff { grid-template-columns: 1fr; }
+    .wf-jq { grid-template-columns: 1fr; }
+    .annot-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ===== Color Swatches ===== */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .color-swatch {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .color-swatch-top {
+    height: 60px;
+    display: flex;
+    align-items: flex-end;
+    padding: 8px;
+  }
+  .color-swatch-bottom {
+    padding: 8px 12px;
+    background: var(--surface);
+  }
+  .color-swatch-bottom .name { font-size: 12px; font-weight: 600; color: #fff; }
+  .color-swatch-bottom .hex { font-size: 11px; color: var(--text-muted); font-family: monospace; }
+
+  /* ===== Typography Sample ===== */
+  .type-sample {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .type-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .type-row:last-child { border-bottom: none; }
+  .type-label { width: 120px; font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
+  .type-value { flex: 1; }
+  .type-h1 { font-size: 28px; font-weight: 700; color: #fff; }
+  .type-h2 { font-size: 20px; font-weight: 600; color: #fff; }
+  .type-body { font-size: 14px; color: var(--text); }
+  .type-code { font-size: 13px; font-family: 'JetBrains Mono', monospace; color: var(--accent-green); }
+  .type-small { font-size: 12px; color: var(--text-muted); }
+  .type-mono { font-size: 13px; font-family: 'JetBrains Mono', monospace; color: var(--text); }
+
+  /* ===== Spacing Scale ===== */
+  .spacing-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .spacing-bar {
+    height: 24px;
+    background: var(--accent);
+    border-radius: 3px;
+    opacity: 0.7;
+  }
+  .spacing-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: monospace;
+    min-width: 80px;
+  }
+
+  /* ===== Divider ===== */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 48px 0;
+  }
+
+  /* ===== Footer ===== */
+  .footer {
+    text-align: center;
+    padding: 32px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  /* ===== Annotation overlay arrows ===== */
+  .arrow-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--accent);
+    margin-top: 8px;
+  }
+  .arrow-note::before {
+    content: '↳';
+    font-size: 14px;
+  }
+
+  /* ===== Empty State ===== */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+  .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+  .empty-title { font-size: 16px; color: var(--text); margin-bottom: 8px; }
+  .empty-desc { font-size: 13px; max-width: 320px; }
+
+  /* ===== Onboarding Tooltip ===== */
+  .onboard-mock {
+    position: relative;
+    display: inline-block;
+  }
+  .onboard-bubble {
+    position: absolute;
+    bottom: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    box-shadow: var(--shadow);
+  }
+  .onboard-bubble::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--accent);
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<div class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">{ }</div>
+      JSON Studio
+    </div>
+    <nav class="nav-links">
+      <a href="#ia">信息架构</a>
+      <a href="#layout">页面布局</a>
+      <a href="#components">组件库</a>
+      <a href="#flows">交互流程</a>
+      <a href="#design">设计系统</a>
+    </nav>
+    <div class="header-actions">
+      <a href="#" class="btn">GitHub</a>
+      <a href="#" class="btn btn-primary">打开工具 →</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ============================================ -->
+<!-- SECTION 1: 信息架构 IA                        -->
+<!-- ============================================ -->
+<div id="ia" class="wireframe-section">
+  <div class="section-tag tag-ia">INFORMATION ARCHITECTURE</div>
+  <h2 class="section-title">一、信息架构（IA）</h2>
+  <p class="section-subtitle">全局站点结构树 —— 所有页面与功能的层级关系</p>
+
+  <div class="ia-container">
+    <div class="ia-tree">
+      <div class="level-1">📁 JSON Studio（根）</div>
+      <div class="level-2">📄 Home（首页 / 编辑器）</div>
+      <div class="level-3">├─ 编辑器区域（Monaco Editor）</div>
+      <div class="level-3">├─ Tree View 面板</div>
+      <div class="level-3">├─ 工具栏（格式化 / 压缩 / 修复）</div>
+      <div class="level-3">└─ 状态栏（行号 / 大小 / 校验状态）</div>
+      <div class="level-2">📁 Toolbox（工具箱 — 侧边栏导航）</div>
+      <div class="level-3">📂 Transform（转换）</div>
+      <div class="level-4">├─ JSON ↔ YAML</div>
+      <div class="level-4">├─ JSON ↔ XML</div>
+      <div class="level-4">├─ JSON ↔ CSV</div>
+      <div class="level-4">├─ JSON → TypeScript / Go / Java / Python</div>
+      <div class="level-4">└─ JSON → JSON Schema</div>
+      <div class="level-3">📂 Query（查询）</div>
+      <div class="level-4">├─ JSONPath 查询</div>
+      <div class="level-4">└─ jq Playground（WASM）</div>
+      <div class="level-3">📂 Validate（校验）</div>
+      <div class="level-4">├─ Schema 校验器</div>
+      <div class="level-4">└─ OpenAPI 预览</div>
+      <div class="level-3">📂 Diff & Merge（对比）</div>
+      <div class="level-4">├─ 双栏 Diff</div>
+      <div class="level-4">└─ 三路合并（Merge）</div>
+      <div class="level-3">📂 Utilities（实用工具）</div>
+      <div class="level-4">├─ JSON 修复（AST Fixer）</div>
+      <div class="level-4">├─ 转义 / 反转义</div>
+      <div class="level-4">└─ Gzip 压缩比计算</div>
+      <div class="level-2">⚙️ Settings（设置页）</div>
+      <div class="level-3">├─ 主题（Dark / Light / 护眼）</div>
+      <div class="level-3">├─ 编辑器偏好（缩进 / 字体 / 字号）</div>
+      <div class="level-3">├─ 快捷键映射</div>
+      <div class="level-3">└─ 隐私声明（数据不离开浏览器）</div>
+      <div class="level-2">📄 Docs（文档页 — 可选 Phase 2）</div>
+      <div class="level-2">📄 Changelog（更新日志）</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================ -->
+<!-- SECTION 2: 主编辑器页面布局                    -->
+<!-- ============================================ -->
+<div id="layout" class="wireframe-section">
+  <div class="section-tag tag-layout">PAGE LAYOUT — WIREFRAME</div>
+  <h2 class="section-title">二、核心页面线框图</h2>
+  <p class="section-subtitle">所有页面以可视化线框呈现，标注区域编号与交互说明</p>
+
+  <!-- ===== Page 1: 主编辑器 (Home) ===== -->
+  <div class="wireframe-label">
+    <span class="badge">PAGE 1</span>
+    <strong>主编辑器 — Home / Editor</strong>
+    <span style="color:var(--text-muted);font-size:13px;">— 用户打开网站的第一个页面，也是使用频率最高的页面</span>
+  </div>
+
+  <div class="wf-main">
+    <!-- Title Bar -->
+    <div class="wf-titlebar">
+      <div class="wf-dot red"></div>
+      <div class="wf-dot yellow"></div>
+      <div class="wf-dot green"></div>
+      <span class="wf-titlebar-title">jsonstudio.app — Editor</span>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="wf-toolbar">
+      <div class="wf-toolbar-group">
+        <span class="wf-btn active">📝 Format</span>
+        <span class="wf-btn">🗜️ Minify</span>
+        <span class="wf-btn">🔧 Fix</span>
+      </div>
+      <div class="wf-toolbar-group">
+        <span class="wf-btn">📋 Copy</span>
+        <span class="wf-btn">📥 Download</span>
+        <span class="wf-btn">📤 Upload</span>
+      </div>
+      <div class="wf-toolbar-group">
+        <span class="wf-btn">🌳 Tree View</span>
+        <span class="wf-btn">📊 Table View</span>
+        <span class="wf-btn">🔍 Query</span>
+      </div>
+      <div class="wf-toolbar-group">
+        <span class="wf-btn">🎨 Sort Keys</span>
+        <span class="wf-btn">📏 2 / 4 Spaces</span>
+      </div>
+      <div class="wf-spacer"></div>
+      <div class="wf-toolbar-group">
+        <span class="wf-btn success">✓ Valid JSON</span>
+      </div>
+    </div>
+
+    <!-- Split View: Code | Tree -->
+    <div class="wf-split">
+      <!-- Left: Code Editor -->
+      <div class="wf-pane left">
+        <div class="wf-pane-header">
+          <span class="tab">input.json</span>
+          <span style="margin-left:auto;font-size:11px;color:var(--text-muted);">UTF-8 · LF · JSON</span>
+        </div>
+        <div class="wf-code">
+          <div><span class="line-num">1</span><span class="punct">{</span></div>
+          <div><span class="line-num">2</span>  <span class="key">"name"</span><span class="punct">:</span> <span class="string">"JSON Studio"</span><span class="punct">,</span></div>
+          <div><span class="line-num">3</span>  <span class="key">"version"</span><span class="punct">:</span> <span class="number">2.0</span><span class="punct">,</span></div>
+          <div><span class="line-num">4</span>  <span class="key">"features"</span><span class="punct">:</span> <span class="punct">[</span></div>
+          <div><span class="line-num">5</span>    <span class="string">"format"</span><span class="punct">,</span></div>
+          <div><span class="line-num">6</span>    <span class="string">"validate"</span><span class="punct">,</span></div>
+          <div><span class="line-num">7</span>    <span class="string">"query"</span></div>
+          <div><span class="line-num">8</span>  <span class="punct">],</span></div>
+          <div class="error-line"><span class="line-num">9</span>  <span class="key">"active"</span><span class="punct">:</span> <span class="boolean">true</span></div>
+          <div class="error-line"><span class="line-num">10</span>  <span class="key">"users"</span><span class="punct">:</span> <span class="punct">{</span></div>
+          <div class="error-line"><span class="line-num">11</span>    <span class="key">"count"</span><span class="punct">:</span> <span class="number">1024</span><span class="punct">,</span></div>
+          <div class="error-line"><span class="line-num">12</span>    <span class="key">"roles"</span><span class="punct">:</span> <span class="punct">[</span><span class="string">"admin"</span><span class="punct">,</span> <span class="string">"user"</span><span class="punct">]</span></div>
+          <div><span class="line-num">13</span>  <span class="punct">}</span></div>
+          <div><span class="line-num">14</span><span class="punct">}</span></div>
+          <div style="margin-top:8px;"><span class="error-msg">⚠ Missing comma on line 9 (expected ',' or '}')</span></div>
+        </div>
+      </div>
+
+      <!-- Right: Tree View -->
+      <div class="wf-pane right">
+        <div class="wf-pane-header">
+          <span class="tab">Tree View</span>
+          <span style="margin-left:auto;font-size:11px;color:var(--text-muted);">🔍 Search keys...</span>
+        </div>
+        <div class="wf-tree">
+          <div class="tree-node">
+            <span class="tree-toggle">▼</span>
+            <span class="tree-key">name</span>
+            <span class="tree-value">"JSON Studio"</span>
+            <span class="tree-type">string</span>
+            <span class="tree-copy-btn">📋 Copy Path</span>
+          </div>
+          <div class="tree-node">
+            <span class="tree-toggle">▼</span>
+            <span class="tree-key">version</span>
+            <span class="tree-value number">2.0</span>
+            <span class="tree-type">number</span>
+          </div>
+          <div class="tree-node">
+            <span class="tree-toggle">▼</span>
+            <span class="tree-key">features</span>
+            <span style="color:var(--text-muted);">[3]</span>
+            <span class="tree-type">array</span>
+          </div>
+          <div class="tree-children">
+            <div class="tree-node"><span class="tree-toggle">├</span><span class="tree-value">"format"</span></div>
+            <div class="tree-node"><span class="tree-toggle">├</span><span class="tree-value">"validate"</span></div>
+            <div class="tree-node"><span class="tree-toggle">└</span><span class="tree-value">"query"</span></div>
+          </div>
+          <div class="tree-node">
+            <span class="tree-toggle">▼</span>
+            <span class="tree-key">active</span>
+            <span class="tree-value boolean">true</span>
+            <span class="tree-type">boolean</span>
+          </div>
+          <div class="tree-node">
+            <span class="tree-toggle">▼</span>
+            <span class="tree-key">users</span>
+            <span style="color:var(--text-muted);">{2}</span>
+            <span class="tree-type">object</span>
+          </div>
+          <div class="tree-children">
+            <div class="tree-node"><span class="tree-toggle">├</span><span class="tree-key">count</span>: <span class="tree-value number">1024</span></div>
+            <div class="tree-node"><span class="tree-toggle">└</span><span class="tree-key">roles</span>: <span style="color:var(--text-muted);">[2]</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="wf-statusbar">
+      <span><span class="status-dot red"></span>1 Error</span>
+      <span>📄 14 lines</span>
+      <span>💾 287 bytes</span>
+      <span>⏱️ Parse: 0.8ms</span>
+      <span style="margin-left:auto;">UTF-8 · LF · JSON5 mode</span>
+    </div>
+  </div>
+
+  <!-- Annotation for Page 1 -->
+  <div class="annot-grid" style="margin-top:24px;">
+    <div class="wf-main" style="min-height:auto;">
+      <div style="padding:16px 20px;">
+        <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:12px;">📐 布局说明</div>
+        <div style="font-size:12px;color:var(--text-muted);line-height:1.8;">
+          <p><strong style="color:var(--text);">整体布局：</strong>顶部 Title Bar → Toolbar → 双栏 Split（左编辑器 / 右 Tree View）→ 底部 Status Bar。双栏比例默认 50:50，可拖拽调整。</p>
+          <p style="margin-top:8px;"><strong style="color:var(--text);">编辑器：</strong>基于 Monaco Editor，支持语法高亮、错误波浪线、自动补全。行号区点击可选中整行。</p>
+          <p style="margin-top:8px;"><strong style="color:var(--text);">Tree View：</strong>可折叠节点，悬停显示「Copy Path」按钮，点击复制 <code style="color:var(--accent);">users.count</code> 格式的路径。</p>
+          <p style="margin-top:8px;"><strong style="color:var(--text);">状态栏：</strong>实时显示校验状态（绿/红/黄点）、行数、字节大小、解析耗时。这是开发者最关心的「一眼信息」。</p>
+        </div>
+      </div>
+    </div>
+    <div class="annot-list">
+      <div class="annot-item"><div class="annot-num">1</div><div class="annot-content"><div class="title">工具栏分组</div><div class="desc">按功能分组（格式化 / 文件操作 / 视图切换），组间用竖线分隔，符合 IDE 习惯</div></div></div>
+      <div class="annot-item"><div class="annot-num">2</div><div class="annot-content"><div class="title">错误行高亮</div><div class="desc">错误行左侧红色边框 + 浅红背景，底部精确报错信息（行号 + 原因）</div></div></div>
+      <div class="annot-item"><div class="annot-num">3</div><div class="annot-content"><div class="title">Tree Node 交互</div><div class="desc">悬停显示 Copy Path 按钮，点击复制 JSONPath 到剪贴板</div></div></div>
+      <div class="annot-item"><div class="annot-num">4</div><div class="annot-content"><div class="title">状态栏指示器</div><div class="desc">绿点=Valid / 红点=Error / 黄点=Warning，配合文字说明</div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== Page 2: 工具箱 (Toolbox with Sidebar) ===== -->
+<div class="wireframe-section">
+  <div class="wireframe-label">
+    <span class="badge">PAGE 2</span>
+    <strong>工具箱 — Toolbox / Transform</strong>
+    <span style="color:var(--text-muted);font-size:13px;">— 左侧导航 + 右侧工具卡片/工作区</span>
+  </div>
+
+  <div class="wf-main">
+    <div class="wf-titlebar">
+      <div class="wf-dot red"></div>
+      <div class="wf-dot yellow"></div>
+      <div class="wf-dot green"></div>
+      <span class="wf-titlebar-title">jsonstudio.app — Toolbox / Transform</span>
+    </div>
+
+    <div class="wf-with-sidebar">
+      <!-- Sidebar -->
+      <div class="wf-sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-title">Transform</div>
+          <div class="sidebar-item active">
+            <span class="icon">⇄</span> JSON ↔ YAML <span class="badge-new">HOT</span>
+          </div>
+          <div class="sidebar-item">
+            <span class="icon">⇄</span> JSON ↔ XML
+          </div>
+          <div class="sidebar-item">
+            <span class="icon">⇄</span> JSON ↔ CSV
+          </div>
+          <div class="sidebar-item">
+            <span class="icon">⚙</span> → TypeScript
+          </div>
+          <div class="sidebar-item">
+            <span class="icon">⚙</span> → Go Struct
+          </div>
+          <div class="sidebar-item">
+            <span class="icon">⚙</span> → Java Class
+          </div>
+          <div class="sidebar-item">
+            <span class="icon">⚙</span> → Python Dict
+          </div>
+          <div class="sidebar-item">
+            <span class="icon">📄</span> → JSON Schema
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">Query</div>
+          <div class="sidebar-item">
+            <span class="icon">🔍</span> JSONPath
+          </div>
+          <div class="sidebar-item">
+            <span class="icon">🔧</span> jq Playground
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">Validate</div>
+          <div class="sidebar-item">
+            <span class="icon">✓</span> Schema 校验
+          </div>
+          <div class="sidebar-item">
+            <span class="icon">📋</span> OpenAPI 预览
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">Diff & Merge</div>
+          <div class="sidebar-item">
+            <span class="icon">⚡</span> Diff Viewer
+          </div>
+          <div class="sidebar-item">
+            <span class="icon">🔀</span> 3-Way Merge
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">Utilities</div>
+          <div class="sidebar-item">
+            <span class="icon">🩹</span> JSON 修复
+          </div>
+          <div class="sidebar-item">
+            <span class="icon">🔐</span> 转义/反转义
+          </div>
+          <div class="sidebar-item">
+            <span class="icon">📦</span> Gzip 压缩比
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Tool Content Area -->
+      <div class="tool-grid" style="grid-template-columns: 1fr;">
+
+        <!-- Transform Tool: JSON → YAML -->
+        <div class="tool-card" style="padding:0;border:none;">
+          <div class="wf-toolbar" style="border-radius:var(--radius) var(--radius) 0 0;">
+            <div class="wf-toolbar-group">
+              <span class="wf-btn active">JSON → YAML</span>
+              <span class="wf-btn">YAML → JSON</span>
+            </div>
+            <div class="wf-spacer"></div>
+            <div class="wf-toolbar-group">
+              <span class="wf-btn">📋 Swap Panels</span>
+              <span class="wf-btn">⚙ Indent: 2</span>
+            </div>
+          </div>
+          <div class="wf-split" style="min-height:280px;">
+            <div class="wf-pane left">
+              <div class="wf-pane-header"><span class="tab">Input (JSON)</span></div>
+              <div class="wf-code" style="min-height:240px;font-size:12px;">
+                <div><span class="line-num">1</span><span class="punct">{</span></div>
+                <div><span class="line-num">2</span>  <span class="key">"database"</span><span class="punct">:</span> <span class="punct">{</span></div>
+                <div><span class="line-num">3</span>    <span class="key">"host"</span><span class="punct">:</span> <span class="string">"localhost"</span><span class="punct">,</span></div>
+                <div><span class="line-num">4</span>    <span class="key">"port"</span><span class="punct">:</span> <span class="number">5432</span><span class="punct">,</span></div>
+                <div><span class="line-num">5</span>    <span class="key">"ssl"</span><span class="punct">:</span> <span class="boolean">true</span></div>
+                <div><span class="line-num">6</span>  <span class="punct">}</span></div>
+                <div><span class="line-num">7</span><span class="punct">}</span></div>
+              </div>
+            </div>
+            <div class="wf-pane right">
+              <div class="wf-pane-header"><span class="tab">Output (YAML)</span></div>
+              <div class="wf-code" style="min-height:240px;font-size:12px;">
+                <div><span class="line-num">1</span><span class="key">database</span><span class="punct">:</span></div>
+                <div><span class="line-num">2</span>  <span class="key">host</span><span class="punct">:</span> <span class="string">localhost</span></div>
+                <div><span class="line-num">3</span>  <span class="key">port</span><span class="punct">:</span> <span class="number">5432</span></div>
+                <div><span class="line-num">4</span>  <span class="key">ssl</span><span class="punct">:</span> <span class="boolean">true</span></div>
+                <div style="margin-top:12px;"><span class="status-dot green" style="margin:0;"></span><span style="color:var(--accent-green);font-size:12px;margin-left:6px;">✓ Conversion successful</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Code Gen Tool: JSON → TypeScript -->
+        <div class="tool-card" style="padding:0;border:none;">
+          <div class="wf-toolbar" style="border-radius:var(--radius) var(--radius) 0 0;">
+            <div class="wf-toolbar-group">
+              <span class="wf-btn">⚙ TypeScript</span>
+              <span class="wf-btn active">⚙ Go</span>
+              <span class="wf-btn">⚙ Java</span>
+              <span class="wf-btn">⚙ Python</span>
+            </div>
+            <div class="wf-spacer"></div>
+            <div class="wf-toolbar-group">
+              <span class="wf-btn">📋 Copy Code</span>
+              <span class="wf-btn">⚙ Options</span>
+            </div>
+          </div>
+          <div class="wf-split" style="min-height:200px;">
+            <div class="wf-pane left">
+              <div class="wf-pane-header"><span class="tab">Input (JSON)</span></div>
+              <div class="wf-code" style="min-height:160px;font-size:12px;">
+                <div><span class="line-num">1</span><span class="punct">{</span></div>
+                <div><span class="line-num">2</span>  <span class="key">"id"</span><span class="punct">:</span> <span class="number">42</span><span class="punct">,</span></div>
+                <div><span class="line-num">3</span>  <span class="key">"name"</span><span class="punct">:</span> <span class="string">"test"</span></div>
+                <div><span class="line-num">4</span><span class="punct">}</span></div>
+              </div>
+            </div>
+            <div class="wf-pane right">
+              <div class="wf-pane-header"><span class="tab">Output (Go Struct)</span></div>
+              <div class="wf-code" style="min-height:160px;font-size:12px;">
+                <div><span class="line-num">1</span><span class="keyword">type</span> <span class="tree-key">Root</span> <span class="keyword">struct</span> <span class="punct">{</span></div>
+                <div><span class="line-num">2</span>    ID   <span class="keyword">int</span>    <span class="string">`json:"id"`</span></div>
+                <div><span class="line-num">3</span>    Name <span class="keyword">string</span> <span class="string">`json:"name"`</span></div>
+                <div><span class="line-num">4</span><span class="punct">}</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== Page 3: jq Playground ===== -->
+<div class="wireframe-section">
+  <div class="wireframe-label">
+    <span class="badge">PAGE 3</span>
+    <strong>jq Playground — Query</strong>
+    <span style="color:var(--text-muted);font-size:13px;">— 三栏布局：输入 JSON | jq 表达式 + 示例 | 输出结果</span>
+  </div>
+
+  <div class="wf-main">
+    <div class="wf-titlebar">
+      <div class="wf-dot red"></div>
+      <div class="wf-dot yellow"></div>
+      <div class="wf-dot green"></div>
+      <span class="wf-titlebar-title">jsonstudio.app — Toolbox / Query / jq Playground</span>
+    </div>
+
+    <div class="wf-jq">
+      <!-- Left: Input JSON -->
+      <div class="jq-input">
+        <div class="wf-pane-header">
+          <span class="tab">Input JSON</span>
+          <span style="margin-left:auto;font-size:11px;color:var(--text-muted);">📤 Drop file</span>
+        </div>
+        <div class="wf-code" style="min-height:320px;font-size:12px;">
+          <div><span class="line-num">1</span><span class="punct">[</span></div>
+          <div><span class="line-num">2</span>  <span class="punct">{</span><span class="key">"name"</span><span class="punct">:</span><span class="string">"Alice"</span><span class="punct">,</span><span class="key">"age"</span><span class="punct">:</span><span class="number">30</span><span class="punct">,</span><span class="key">"city"</span><span class="punct">:</span><span class="string">"NYC"</span><span class="punct">},</span></div>
+          <div><span class="line-num">3</span>  <span class="punct">{</span><span class="key">"name"</span><span class="punct">:</span><span class="string">"Bob"</span><span class="punct">,</span><span class="key">"age"</span><span class="punct">:</span><span class="number">25</span><span class="punct">,</span><span class="key">"city"</span><span class="punct">:</span><span class="string">"SF"</span><span class="punct">},</span></div>
+          <div><span class="line-num">4</span>  <span class="punct">{</span><span class="key">"name"</span><span class="punct">:</span><span class="string">"Carol"</span><span class="punct">,</span><span class="key">"age"</span><span class="punct">:</span><span class="number">35</span><span class="punct">,</span><span class="key">"city"</span><span class="punct">:</span><span class="string">"NYC"</span><span class="punct">}</span></div>
+          <div><span class="line-num">5</span><span class="punct">]</span></div>
+        </div>
+      </div>
+
+      <!-- Center: jq Expression + Examples -->
+      <div class="jq-center">
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;">jq Filter</div>
+        <div class="jq-expr-input">.[] | select(.age > 28) | {name, city}</div>
+        <div style="font-size:11px;color:var(--accent-green);margin-top:4px;">✓ Valid jq expression</div>
+
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-top:8px;">Examples</div>
+        <div class="jq-examples">
+          <div class="jq-example-chip">.[] | select(.city == "NYC")</div>
+          <div class="jq-example-chip">map(.name) | join(", ")</div>
+          <div class="jq-example-chip">group_by(.city) | map({city: .[0].city, count: length})</div>
+          <div class="jq-example-chip">sort_by(.age) | reverse</div>
+          <div class="jq-example-chip">.[] | to_entries | .[] | select(.value > 30)</div>
+        </div>
+
+        <div style="margin-top:auto;padding-top:12px;border-top:1px solid var(--border);">
+          <div style="font-size:11px;color:var(--text-muted);">⚡ Powered by jq 1.7 (WebAssembly)</div>
+          <div style="font-size:11px;color:var(--accent-green);margin-top:2px;">🔒 Runs entirely in your browser</div>
+        </div>
+      </div>
+
+      <!-- Right: Output -->
+      <div class="jq-output">
+        <div class="wf-pane-header">
+          <span class="tab">Output</span>
+          <span style="margin-left:auto;font-size:11px;color:var(--accent-green);">✓ 2 results</span>
+        </div>
+        <div class="wf-code" style="min-height:320px;font-size:12px;">
+          <div><span class="line-num">1</span><span class="punct">[</span></div>
+          <div><span class="line-num">2</span>  <span class="punct">{</span></div>
+          <div><span class="line-num">3</span>    <span class="key">"name"</span><span class="punct">:</span> <span class="string">"Alice"</span><span class="punct">,</span></div>
+          <div><span class="line-num">4</span>    <span class="key">"city"</span><span class="punct">:</span> <span class="string">"NYC"</span></div>
+          <div><span class="line-num">5</span>  <span class="punct">},</span></div>
+          <div><span class="line-num">6</span>  <span class="punct">{</span></div>
+          <div><span class="line-num">7</span>    <span class="key">"name"</span><span class="punct">:</span> <span class="string">"Carol"</span><span class="punct">,</span></div>
+          <div><span class="line-num">8</span>    <span class="key">"city"</span><span class="punct">:</span> <span class="string">"NYC"</span></div>
+          <div><span class="line-num">9</span>  <span class="punct">}</span></div>
+          <div><span class="line-num">10</span><span class="punct">]</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== Page 4: Schema Validator ===== -->
+<div class="wireframe-section">
+  <div class="wireframe-label">
+    <span class="badge">PAGE 4</span>
+    <strong>Schema 校验器 — Validate</strong>
+    <span style="color:var(--text-muted);font-size:13px;">— 左输入 JSON + Schema，右校验结果</span>
+  </div>
+
+  <div class="wf-main">
+    <div class="wf-titlebar">
+      <div class="wf-dot red"></div>
+      <div class="wf-dot yellow"></div>
+      <div class="wf-dot green"></div>
+      <span class="wf-titlebar-title">jsonstudio.app — Toolbox / Validate / Schema</span>
+    </div>
+
+    <div class="wf-schema">
+      <!-- Left: Input -->
+      <div class="wf-pane left" style="border-right:1px solid var(--border);">
+        <div class="wf-pane-header">
+          <span class="tab">Instance JSON</span>
+        </div>
+        <div class="wf-code" style="min-height:160px;font-size:12px;">
+          <div><span class="line-num">1</span><span class="punct">{</span></div>
+          <div><span class="line-num">2</span>  <span class="key">"email"</span><span class="punct">:</span> <span class="string">"user@example"</span><span class="punct">,</span></div>
+          <div><span class="line-num">3</span>  <span class="key">"age"</span><span class="punct">:</span> <span class="string">"twenty"</span><span class="punct">,</span></div>
+          <div><span class="line-num">4</span>  <span class="key">"name"</span><span class="punct">:</span> <span class="string">"John"</span></div>
+          <div><span class="line-num">5</span><span class="punct">}</span></div>
+        </div>
+        <div class="wf-pane-header" style="border-top:1px solid var(--border);">
+          <span class="tab">Schema (Draft 2020-12)</span>
+          <span style="margin-left:auto;font-size:11px;color:var(--accent);">📄 Load from URL</span>
+        </div>
+        <div class="wf-code" style="min-height:140px;font-size:12px;">
+          <div><span class="line-num">1</span><span class="punct">{</span></div>
+          <div><span class="line-num">2</span>  <span class="key">"$schema"</span><span class="punct">:</span> <span class="string">"https://..."</span><span class="punct">,</span></div>
+          <div><span class="line-num">3</span>  <span class="key">"type"</span><span class="punct">:</span> <span class="string">"object"</span><span class="punct">,</span></div>
+          <div><span class="line-num">4</span>  <span class="key">"required"</span><span class="punct">:</span> <span class="punct">[</span><span class="string">"email"</span><span class="punct">,</span><span class="string">"age"</span><span class="punct">],</span></div>
+          <div><span class="line-num">5</span>  <span class="key">"properties"</span><span class="punct">:</span> <span class="punct">{</span><span class="key">"email"</span><span class="punct">:{</span><span class="key">"format"</span><span class="punct">:</span><span class="string">"email"</span><span class="punct">}}</span></div>
+          <div><span class="line-num">6</span><span class="punct">}</span></div>
+        </div>
+      </div>
+
+      <!-- Right: Validation Results -->
+      <div class="schema-result">
+        <div class="schema-pass" style="background:rgba(248,81,73,0.1);border-color:rgba(248,81,73,0.3);color:var(--accent-red);">
+          ✗ 2 Validation Errors
+        </div>
+        <div class="schema-error">
+          <span class="path">/email</span> — <span class="msg">must match format "email" (got "user@example")</span>
+        </div>
+        <div class="schema-error">
+          <span class="path">/age</span> — <span class="msg">must be number (got string "twenty")</span>
+        </div>
+
+        <div style="margin-top:20px;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border);padding-top:12px;">
+          <div style="margin-bottom:6px;color:var(--text);font-weight:600;">📊 Stats</div>
+          <div>Schema Draft: <span style="color:var(--accent);">2020-12</span></div>
+          <div>Validate Time: <span style="color:var(--accent-green);">1.2ms</span></div>
+          <div>Engine: <span style="color:var(--accent-purple);">Ajv 8.x (WASM)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== Page 5: Diff Viewer ===== -->
+<div class="wireframe-section">
+  <div class="wireframe-label">
+    <span class="badge">PAGE 5</span>
+    <strong>Diff & Merge — 三栏对比</strong>
+    <span style="color:var(--text-muted);font-size:13px;">— 并排对比两个 JSON，中间显示合并结果</span>
+  </div>
+
+  <div class="wf-main">
+    <div class="wf-titlebar">
+      <div class="wf-dot red"></div>
+      <div class="wf-dot yellow"></div>
+      <div class="wf-dot green"></div>
+      <span class="wf-titlebar-title">jsonstudio.app — Toolbox / Diff</span>
+    </div>
+
+    <div class="wf-diff">
+      <!-- Left: Source A -->
+      <div class="wf-diff-pane">
+        <div class="diff-header left">📄 Source A (Original)</div>
+        <div class="diff-content">
+          <div><span class="line-num">1</span><span class="punct">{</span></div>
+          <div><span class="line-num">2</span>  <span class="key">"name"</span><span class="punct">:</span> <span class="string">"API v1"</span><span class="punct">,</span></div>
+          <div class="diff-line-del"><span class="line-num">3</span>  <span class="key">"timeout"</span><span class="punct">:</span> <span class="number">30</span><span class="punct">,</span></div>
+          <div><span class="line-num">4</span>  <span class="key">"retries"</span><span class="punct">:</span> <span class="number">3</span><span class="punct">,</span></div>
+          <div class="diff-line-del"><span class="line-num">5</span>  <span class="key">"debug"</span><span class="punct">:</span> <span class="boolean">true</span></div>
+          <div><span class="line-num">6</span><span class="punct">}</span></div>
+        </div>
+      </div>
+
+      <!-- Middle: Source B -->
+      <div class="wf-diff-pane">
+        <div class="diff-header middle">📄 Source B (Modified)</div>
+        <div class="diff-content">
+          <div><span class="line-num">1</span><span class="punct">{</span></div>
+          <div class="diff-line-mod"><span class="line-num">2</span>  <span class="key">"name"</span><span class="punct">:</span> <span class="string">"API v2"</span><span class="punct">,</span></div>
+          <div class="diff-line-add"><span class="line-num">3</span>  <span class="key">"timeout"</span><span class="punct">:</span> <span class="number">60</span><span class="punct">,</span></div>
+          <div><span class="line-num">4</span>  <span class="key">"retries"</span><span class="punct">:</span> <span class="number">3</span><span class="punct">,</span></div>
+          <div class="diff-line-add"><span class="line-num">5</span>  <span class="key">"cache"</span><span class="punct">:</span> <span class="boolean">true</span></div>
+          <div><span class="line-num">6</span><span class="punct">}</span></div>
+        </div>
+      </div>
+
+      <!-- Right: Merge Result -->
+      <div class="wf-diff-pane">
+        <div class="diff-header right">🔀 Merged Result</div>
+        <div class="diff-content">
+          <div><span class="line-num">1</span><span class="punct">{</span></div>
+          <div><span class="line-num">2</span>  <span class="key">"name"</span><span class="punct">:</span> <span class="string">"API v2"</span><span class="punct">,</span></div>
+          <div><span class="line-num">3</span>  <span class="key">"timeout"</span><span class="punct">:</span> <span class="number">60</span><span class="punct">,</span></div>
+          <div><span class="line-num">4</span>  <span class="key">"retries"</span><span class="punct">:</span> <span class="number">3</span><span class="punct">,</span></div>
+          <div><span class="line-num">5</span>  <span class="key">"cache"</span><span class="punct">:</span> <span class="boolean">true</span></div>
+          <div><span class="line-num">6</span><span class="punct">}</span></div>
+          <div style="margin-top:12px;"><span class="status-dot green" style="margin:0;"></span><span style="color:var(--accent-green);font-size:12px;margin-left:6px;">✓ Auto-merged successfully</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== Page 6: Command Palette ===== -->
+<div class="wireframe-section">
+  <div class="wireframe-label">
+    <span class="badge">PAGE 6</span>
+    <strong>命令面板 — Command Palette (⌘K)</strong>
+    <span style="color:var(--text-muted);font-size:13px;">— 全局快捷键唤起，快速跳转任何功能</span>
+  </div>
+
+  <div style="max-width:600px;margin:0 auto;">
+    <div class="wf-cmdk">
+      <input class="cmdk-input" placeholder="🔍 Type a command or search..." />
+      <div class="cmdk-list">
+        <div class="cmdk-group-title">Editor</div>
+        <div class="cmdk-item selected">
+          <span class="cmdk-icon">📝</span> Format JSON
+          <span class="cmdk-shortcut">⌘ ⇧ F</span>
+        </div>
+        <div class="cmdk-item">
+          <span class="cmdk-icon">🗜️</span> Minify JSON
+          <span class="cmdk-shortcut">⌘ ⇧ M</span>
+        </div>
+        <div class="cmdk-item">
+          <span class="cmdk-icon">🔧</span> Fix JSON
+          <span class="cmdk-shortcut">⌘ ⇧ X</span>
+        </div>
+        <div class="cmdk-group-title">Navigate</div>
+        <div class="cmdk-item">
+          <span class="cmdk-icon">⇄</span> Go to Transform / YAML
+        </div>
+        <div class="cmdk-item">
+          <span class="cmdk-icon">🔍</span> Go to jq Playground
+        </div>
+        <div class="cmdk-item">
+          <span class="cmdk-icon">✓</span> Go to Schema Validator
+        </div>
+        <div class="cmdk-item">
+          <span class="cmdk-icon">⚡</span> Go to Diff Viewer
+        </div>
+        <div class="cmdk-group-title">Settings</div>
+        <div class="cmdk-item">
+          <span class="cmdk-icon">🌙</span> Toggle Dark Mode
+          <span class="cmdk-shortcut">⌘ ⇧ D</span>
+        </div>
+        <div class="cmdk-item">
+          <span class="cmdk-icon">⌨️</span> Show Keyboard Shortcuts
+          <span class="cmdk-shortcut">⌘ /</span>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:16px;">按 <kbd style="background:var(--surface-2);padding:2px 6px;border-radius:3px;border:1px solid var(--border);font-family:monospace;">⌘K</kbd> 或 <kbd style="background:var(--surface-2);padding:2px 6px;border-radius:3px;border:1px solid var(--border);font-family:monospace;">Ctrl+K</kbd> 全局唤起</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== Page 7: Settings ===== -->
+<div class="wireframe-section">
+  <div class="wireframe-label">
+    <span class="badge">PAGE 7</span>
+    <strong>设置页 — Settings</strong>
+    <span style="color:var(--text-muted);font-size:13px;">— 主题、编辑器偏好、快捷键、隐私声明</span>
+  </div>
+
+  <div class="wf-main">
+    <div class="wf-titlebar">
+      <div class="wf-dot red"></div>
+      <div class="wf-dot yellow"></div>
+      <div class="wf-dot green"></div>
+      <span class="wf-titlebar-title">jsonstudio.app — Settings</span>
+    </div>
+    <div class="wf-settings">
+      <div class="settings-group">
+        <div class="settings-group-title">🎨 外观</div>
+        <div class="settings-row">
+          <div><label>Theme</label><div class="hint">切换深色 / 浅色 / 护眼模式</div></div>
+          <select class="select-mock">
+            <option>🌙 Dark (Default)</option>
+            <option>☀️ Light</option>
+            <option>👁️ Eye Care</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div><label>Accent Color</label><div class="hint">主色调，影响按钮和高亮</div></div>
+          <select class="select-mock">
+            <option>🔵 Blue</option>
+            <option>🟢 Green</option>
+            <option>🟣 Purple</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-group-title">📝 编辑器偏好</div>
+        <div class="settings-row">
+          <div><label>Indent Size</label><div class="hint">格式化时的缩进空格数</div></div>
+          <select class="select-mock">
+            <option>2 spaces</option>
+            <option>4 spaces</option>
+            <option>Tab</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div><label>Font Family</label><div class="hint">编辑器字体</div></div>
+          <select class="select-mock">
+            <option>JetBrains Mono</option>
+            <option>Fira Code</option>
+            <option>SF Mono</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div><label>Font Size</label><div class="hint">当前: 13px</div></div>
+          <select class="select-mock">
+            <option>12px</option>
+            <option>13px</option>
+            <option>14px</option>
+            <option>16px</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div><label>Tab Size</label><div class="hint">Tab 键等效空格数</div></div>
+          <select class="select-mock">
+            <option>2</option>
+            <option>4</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-group-title">🔒 隐私</div>
+        <div class="settings-row">
+          <div><label>Local-Only Mode</label><div class="hint">禁用所有网络请求，100% 离线运行</div></div>
+          <div class="toggle on"></div>
+        </div>
+        <div class="settings-row">
+          <div><label>Clear History on Exit</label><div class="hint">关闭页面时清除 IndexedDB 中的历史记录</div></div>
+          <div class="toggle"></div>
+        </div>
+        <div class="settings-row">
+          <div><label>Telemetry</label><div class="hint">发送匿名使用统计（不含数据内容）</div></div>
+          <div class="toggle"></div>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-group-title">⌨️ 键盘快捷键（部分）</div>
+        <div class="settings-row">
+          <div><label>格式化 JSON</label></div>
+          <span class="cmdk-shortcut" style="margin:0;">⌘ ⇧ F</span>
+        </div>
+        <div class="settings-row">
+          <div><label>压缩 JSON</label></div>
+          <span class="cmdk-shortcut" style="margin:0;">⌘ ⇧ M</span>
+        </div>
+        <div class="settings-row">
+          <div><label>打开命令面板</label></div>
+          <span class="cmdk-shortcut" style="margin:0;">⌘ K</span>
+        </div>
+        <div class="settings-row">
+          <div><label>切换 Tree View</label></div>
+          <span class="cmdk-shortcut" style="margin:0;">⌘ ⇧ T</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================ -->
+<!-- SECTION 3: 组件库                             -->
+<!-- ============================================ -->
+<div id="components" class="wireframe-section">
+  <div class="section-tag tag-component">COMPONENT LIBRARY</div>
+  <h2 class="section-title">三、组件库（Design Components）</h2>
+  <p class="section-subtitle">所有可复用 UI 组件的定义与状态规范</p>
+
+  <div class="tool-grid" style="grid-template-columns: repeat(2, 1fr);">
+    <!-- Toast Notifications -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-card-icon blue">🔔</div>
+        <div class="tool-card-title">Toast 通知</div>
+      </div>
+      <div class="tool-card-desc">操作后右下角弹出，3 秒自动消失，可手动关闭</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="toast-mock success" style="position:static;bottom:auto;right:auto;width:fit-content;">
+          ✅ JSON formatted successfully
+        </div>
+        <div class="toast-mock error" style="position:static;bottom:auto;right:auto;width:fit-content;">
+          ❌ Invalid JSON at line 9: Expected ','
+        </div>
+        <div class="toast-mock info" style="position:static;bottom:auto;right:auto;width:fit-content;">
+          ℹ️ Copied path to clipboard: users[0].email
+        </div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-card-icon green">🔘</div>
+        <div class="tool-card-title">按钮体系</div>
+      </div>
+      <div class="tool-card-desc">5 种按钮状态，覆盖所有交互场景</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <span class="btn btn-primary">Primary</span>
+        <span class="btn">Default</span>
+        <span class="btn active" style="border-color:var(--accent);color:var(--accent);">Active</span>
+        <span class="btn" style="opacity:0.4;cursor:not-allowed;">Disabled</span>
+        <span class="btn" style="border-color:var(--accent-green);color:var(--accent-green);">✓ Success</span>
+      </div>
+      <div style="margin-top:12px;font-size:11px;color:var(--text-muted);">
+        Hover: 边框变蓝 | Active: 浅蓝背景 | Disabled: 40% 透明度
+      </div>
+    </div>
+
+    <!-- Toggle Switch -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-card-icon purple">🔀</div>
+        <div class="tool-card-title">Toggle 开关</div>
+      </div>
+      <div class="tool-card-desc">设置页用，表示布尔偏好的开/关状态</div>
+      <div style="display:flex;gap:24px;align-items:center;margin-top:8px;">
+        <div style="text-align:center;">
+          <div class="toggle on" style="margin:0 auto 8px;"></div>
+          <div style="font-size:11px;color:var(--accent-green);">ON</div>
+        </div>
+        <div style="text-align:center;">
+          <div class="toggle" style="margin:0 auto 8px;"></div>
+          <div style="font-size:11px;color:var(--text-muted);">OFF</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tooltip / Onboarding -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-card-icon orange">💡</div>
+        <div class="tool-card-title">Tooltip / 引导气泡</div>
+      </div>
+      <div class="tool-card-desc">首次使用时的功能引导，指向特定 UI 元素</div>
+      <div style="text-align:center;padding:20px 0;">
+        <div class="onboard-mock">
+          <span class="btn btn-primary">Format JSON</span>
+          <div class="onboard-bubble">Click to format your JSON instantly!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-card-icon red">📭</div>
+        <div class="tool-card-title">Empty State（空状态）</div>
+      </div>
+      <div class="tool-card-desc">用户首次访问某工具，尚无输入内容时展示</div>
+      <div class="empty-state" style="padding:30px 20px;border:1px dashed var(--border);border-radius:8px;margin-top:8px;">
+        <div class="empty-icon">📋</div>
+        <div class="empty-title">No JSON yet</div>
+        <div class="empty-desc">Paste your JSON here, or drag & drop a .json file to get started.</div>
+        <div style="margin-top:12px;">
+          <span class="btn btn-primary">📂 Load Sample</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Keyboard Shortcut Chips -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-card-icon pink">⌨️</div>
+        <div class="tool-card-title">快捷键 Chip</div>
+      </div>
+      <div class="tool-card-desc">命令面板和设置页中展示快捷键组合</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+        <span class="cmdk-shortcut" style="margin:0;font-size:12px;">⌘ K</span>
+        <span class="cmdk-shortcut" style="margin:0;font-size:12px;">⌘ ⇧ F</span>
+        <span class="cmdk-shortcut" style="margin:0;font-size:12px;">⌘ ⇧ M</span>
+        <span class="cmdk-shortcut" style="margin:0;font-size:12px;">⌘ /</span>
+        <span class="cmdk-shortcut" style="margin:0;font-size:12px;">Esc</span>
+        <span class="cmdk-shortcut" style="margin:0;font-size:12px;">⌥ ↑</span>
+      </div>
+      <div style="margin-top:12px;font-size:11px;color:var(--text-muted);">
+        样式：等宽字体 + 浅色背景 + 细边框，模拟实体键盘按键
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================ -->
+<!-- SECTION 4: 交互流程                          -->
+<!-- ============================================ -->
+<div id="flows" class="wireframe-section">
+  <div class="section-tag tag-flow">INTERACTION FLOWS</div>
+  <h2 class="section-title">四、核心交互流程</h2>
+  <p class="section-subtitle">用户完成关键任务的操作路径与状态变化</p>
+
+  <!-- Flow 1: 格式化 JSON -->
+  <div style="margin-bottom:40px;">
+    <h3 style="font-size:16px;color:#fff;margin-bottom:16px;">Flow 1: 格式化一段压缩的 JSON</h3>
+    <div style="display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:16px;">
+      <!-- Step 1 -->
+      <div style="min-width:220px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-right:16px;">
+        <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px;">STEP 1</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;">粘贴压缩 JSON</div>
+        <div class="wf-code" style="font-size:11px;padding:8px;min-height:auto;">{"name":"test","items":[1,2,3]}</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">用户 Ctrl+V 粘贴，或拖入 .json 文件</div>
+      </div>
+      <!-- Arrow -->
+      <div style="font-size:24px;color:var(--accent);margin:auto 4px;flex-shrink:0;">→</div>
+      <!-- Step 2 -->
+      <div style="min-width:220px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-right:16px;">
+        <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px;">STEP 2</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;">点击 Format</div>
+        <div style="text-align:center;padding:12px 0;">
+          <span class="btn btn-primary">📝 Format</span>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">或按 ⌘⇧F 快捷键</div>
+      </div>
+      <!-- Arrow -->
+      <div style="font-size:24px;color:var(--accent);margin:auto 4px;flex-shrink:0;">→</div>
+      <!-- Step 3 -->
+      <div style="min-width:220px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-right:16px;">
+        <div style="font-size:11px;color:var(--accent-green);font-weight:700;margin-bottom:8px;">STEP 3</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;">实时格式化完成</div>
+        <div class="wf-code" style="font-size:11px;padding:8px;min-height:auto;">{<br>  "name": "test",<br>  "items": [1, 2, 3]<br>}</div>
+        <div style="font-size:11px;color:var(--accent-green);margin-top:8px;">✓ Toast: "Formatted in 0.8ms"</div>
+      </div>
+      <!-- Arrow -->
+      <div style="font-size:24px;color:var(--accent);margin:auto 4px;flex-shrink:0;">→</div>
+      <!-- Step 4 -->
+      <div style="min-width:220px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;">
+        <div style="font-size:11px;color:var(--accent-purple);font-weight:700;margin-bottom:8px;">STEP 4</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;">复制到剪贴板</div>
+        <div style="text-align:center;padding:12px 0;">
+          <span class="btn">📋 Copy</span>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">一键复制格式化结果</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow 2: jq 查询 -->
+  <div style="margin-bottom:40px;">
+    <h3 style="font-size:16px;color:#fff;margin-bottom:16px;">Flow 2: 用 jq 提取嵌套数据</h3>
+    <div style="display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:16px;">
+      <div style="min-width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-right:16px;">
+        <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px;">STEP 1</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;">导航到 jq Playground</div>
+        <div style="font-size:11px;color:var(--text-muted);">侧边栏 → Query → jq Playground<br>或 ⌘K 输入 "jq"</div>
+      </div>
+      <div style="font-size:24px;color:var(--accent);margin:auto 4px;flex-shrink:0;">→</div>
+      <div style="min-width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-right:16px;">
+        <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px;">STEP 2</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;">粘贴 JSON 数据</div>
+        <div style="font-size:11px;color:var(--text-muted);">左侧面板输入或拖入文件</div>
+      </div>
+      <div style="font-size:24px;color:var(--accent);margin:auto 4px;flex-shrink:0;">→</div>
+      <div style="min-width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-right:16px;">
+        <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px;">STEP 3</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;">输入 jq 表达式</div>
+        <div style="font-size:11px;color:var(--accent-green);font-family:monospace;background:var(--code-bg);padding:6px 8px;border-radius:4px;">.users[] | select(.age>18)</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">或点击 Example Chip 快速填入</div>
+      </div>
+      <div style="font-size:24px;color:var(--accent);margin:auto 4px;flex-shrink:0;">→</div>
+      <div style="min-width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;">
+        <div style="font-size:11px;color:var(--accent-green);font-weight:700;margin-bottom:8px;">STEP 4</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;">实时查看结果</div>
+        <div style="font-size:11px;color:var(--text-muted);">右侧面板实时显示过滤结果<br>支持复制 / 下载</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow 3: Schema 校验 -->
+  <div>
+    <h3 style="font-size:16px;color:#fff;margin-bottom:16px;">Flow 3: 用 JSON Schema 校验 API 响应</h3>
+    <div style="display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:16px;">
+      <div style="min-width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-right:16px;">
+        <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px;">STEP 1</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;">粘贴 API 响应 JSON</div>
+        <div style="font-size:11px;color:var(--text-muted);">从 Postman / curl 复制响应体</div>
+      </div>
+      <div style="font-size:24px;color:var(--accent);margin:auto 4px;flex-shrink:0;">→</div>
+      <div style="min-width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-right:16px;">
+        <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px;">STEP 2</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;">粘贴 / 加载 Schema</div>
+        <div style="font-size:11px;color:var(--text-muted);">粘贴 schema.json 或输入 URL 自动抓取</div>
+      </div>
+      <div style="font-size:24px;color:var(--accent);margin:auto 4px;flex-shrink:0;">→</div>
+      <div style="min-width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-right:16px;">
+        <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px;">STEP 3</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;">选择 Schema Draft</div>
+        <div style="font-size:11px;color:var(--text-muted);">Draft 4 / 6 / 7 / 2019-09 / 2020-12</div>
+      </div>
+      <div style="font-size:24px;color:var(--accent);margin:auto 4px;flex-shrink:0;">→</div>
+      <div style="min-width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;">
+        <div style="font-size:11px;color:var(--accent-green);font-weight:700;margin-bottom:8px;">STEP 4</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;">查看校验报告</div>
+        <div style="font-size:11px;color:var(--text-muted);">逐条列出错误路径与原因<br>✓ 通过 / ✗ 失败 + 错误统计</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================ -->
+<!-- SECTION 5: 设计系统                           -->
+<!-- ============================================ -->
+<div id="design" class="wireframe-section">
+  <div class="section-tag tag-design">DESIGN SYSTEM</div>
+  <h2 class="section-title">五、设计系统（Design System）</h2>
+  <p class="section-subtitle">颜色、字体、间距、圆角等基础设计令牌（Design Tokens）</p>
+
+  <!-- Color Palette -->
+  <h3 style="font-size:16px;color:#fff;margin-bottom:8px;">5.1 色彩系统</h3>
+  <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">基于 GitHub Dark 色系扩展，确保长时间使用不疲劳</p>
+
+  <div class="color-grid">
+    <div class="color-swatch">
+      <div class="color-swatch-top" style="background:#0d1117;"></div>
+      <div class="color-swatch-bottom"><div class="name">Background</div><div class="hex">#0D1117</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-top" style="background:#161b22;"></div>
+      <div class="color-swatch-bottom"><div class="name">Surface</div><div class="hex">#161B22</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-top" style="background:#1c2333;"></div>
+      <div class="color-swatch-bottom"><div class="name">Surface 2</div><div class="hex">#1C2333</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-top" style="background:#30363d;"></div>
+      <div class="color-swatch-bottom"><div class="name">Border</div><div class="hex">#30363D</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-top" style="background:#58a6ff;"></div>
+      <div class="color-swatch-bottom"><div class="name">Accent Blue</div><div class="hex">#58A6FF</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-top" style="background:#3fb950;"></div>
+      <div class="color-swatch-bottom"><div class="name">Success Green</div><div class="hex">#3FB950</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-top" style="background:#f85149;"></div>
+      <div class="color-swatch-bottom"><div class="name">Error Red</div><div class="hex">#F85149</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-top" style="background:#d29922;"></div>
+      <div class="color-swatch-bottom"><div class="name">Warning Orange</div><div class="hex">#D29922</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-top" style="background:#bc8cff;"></div>
+      <div class="color-swatch-bottom"><div class="name">Purple</div><div class="hex">#BC8CFF</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-top" style="background:#7ee787;"></div>
+      <div class="color-swatch-bottom"><div class="name">Code Green</div><div class="hex">#7EE787</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-top" style="background:#a5d6ff;"></div>
+      <div class="color-swatch-bottom"><div class="name">Code Blue</div><div class="hex">#A5D6FF</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-top" style="background:#ff7b72;"></div>
+      <div class="color-swatch-bottom"><div class="name">Code Red</div><div class="hex">#FF7B72</div></div>
+    </div>
+  </div>
+
+  <!-- Syntax Highlighting Colors -->
+  <h3 style="font-size:16px;color:#fff;margin:32px 0 8px;">5.2 代码语法高亮色板</h3>
+  <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">JSON 各数据类型的专属颜色，确保一眼区分</p>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 16px;">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">Key</div>
+      <div style="font-size:14px;color:#7ee787;font-family:monospace;">"name"</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 16px;">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">String</div>
+      <div style="font-size:14px;color:#a5d6ff;font-family:monospace;">"hello"</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 16px;">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">Number</div>
+      <div style="font-size:14px;color:#79c0ff;font-family:monospace;">42</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 16px;">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">Boolean</div>
+      <div style="font-size:14px;color:#ffa657;font-family:monospace;">true / false</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 16px;">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">Null</div>
+      <div style="font-size:14px;color:#ff7b72;font-family:monospace;">null</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 16px;">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">Punctuation</div>
+      <div style="font-size:14px;color:#c9d1d9;font-family:monospace;">{ } [ ] , :</div>
+    </div>
+  </div>
+
+  <!-- Typography -->
+  <h3 style="font-size:16px;color:#fff;margin:32px 0 8px;">5.3 字体排印</h3>
+  <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">UI 文本与代码文本使用不同字体族，确保各场景最佳可读性</p>
+
+  <div class="type-sample">
+    <div class="type-row">
+      <div class="type-label">UI Font</div>
+      <div class="type-value">
+        <div class="type-h1">JSON Studio</div>
+        <div class="type-body" style="margin-top:4px;">The last JSON tool you'll ever need.</div>
+        <div class="type-small" style="margin-top:4px;">辅助文字用于提示和说明 · 12px · #8B949E</div>
+      </div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Mono Font</div>
+      <div class="type-value">
+        <div class="type-code">const data = JSON.parse(rawText);</div>
+        <div class="type-mono" style="margin-top:4px;">{ "key": "value", "num": 42 }</div>
+      </div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Font Stack</div>
+      <div class="type-value">
+        <div class="type-mono" style="font-size:12px;color:var(--text-muted);">
+          UI: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei"<br>
+          Mono: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spacing Scale -->
+  <h3 style="font-size:16px;color:#fff;margin:32px 0 8px;">5.4 间距系统（Spacing Scale）</h3>
+  <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">基于 4px 基准的倍数系统，确保布局节奏一致</p>
+
+  <div>
+    <div class="spacing-row"><div class="spacing-bar" style="width:4px;"></div><span class="spacing-label">4px — xs</span><span style="font-size:11px;color:var(--text-muted);">图标间距、行内元素</span></div>
+    <div class="spacing-row"><div class="spacing-bar" style="width:8px;"></div><span class="spacing-label">8px — sm</span><span style="font-size:11px;color:var(--text-muted);">按钮内边距、紧凑列表</span></div>
+    <div class="spacing-row"><div class="spacing-bar" style="width:12px;"></div><span class="spacing-label">12px — md</span><span style="font-size:11px;color:var(--text-muted);">卡片内边距、表单间距</span></div>
+    <div class="spacing-row"><div class="spacing-bar" style="width:16px;"></div><span class="spacing-label">16px — lg</span><span style="font-size:11px;color:var(--text-muted);">面板内边距、分区间距</span></div>
+    <div class="spacing-row"><div class="spacing-bar" style="width:24px;"></div><span class="spacing-label">24px — xl</span><span style="font-size:11px;color:var(--text-muted);">模块间距、页面边距</span></div>
+    <div class="spacing-row"><div class="spacing-bar" style="width:32px;"></div><span class="spacing-label">32px — 2xl</span><span style="font-size:11px;color:var(--text-muted);">大区块间距、Section 间距</span></div>
+    <div class="spacing-row"><div class="spacing-bar" style="width:48px;"></div><span class="spacing-label">48px — 3xl</span><span style="font-size:11px;color:var(--text-muted);">页面级留白</span></div>
+  </div>
+
+  <!-- Border Radius -->
+  <h3 style="font-size:16px;color:#fff;margin:32px 0 8px;">5.5 圆角与阴影</h3>
+  <div style="display:flex;gap:24px;flex-wrap:wrap;">
+    <div style="text-align:center;">
+      <div style="width:80px;height:80px;background:var(--surface);border:1px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-muted);">4px</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">小元素</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="width:80px;height:80px;background:var(--surface);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-muted);">8px</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">按钮 / 卡片</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="width:80px;height:80px;background:var(--surface);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-muted);">12px</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">面板 / 弹窗</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="width:80px;height:80px;background:var(--surface);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-muted);">50%</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">头像 / 状态点</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================ -->
+<!-- SECTION 6: 响应式断点                        -->
+<!-- ============================================ -->
+<div class="wireframe-section">
+  <div class="section-tag tag-layout">RESPONSIVE DESIGN</div>
+  <h2 class="section-title">六、响应式断点策略</h2>
+  <p class="section-subtitle">适配桌面、平板、移动端的布局变化规则</p>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;">
+      <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px;">≥ 1200px · DESKTOP</div>
+      <div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;">完整布局</div>
+      <ul style="font-size:12px;color:var(--text-muted);line-height:2;padding-left:16px;">
+        <li>双栏 Split 50:50</li>
+        <li>侧边栏 260px 常驻</li>
+        <li>Tree View 完整展开</li>
+        <li>所有工具栏按钮可见</li>
+        <li>命令面板居中弹窗</li>
+      </ul>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;">
+      <div style="font-size:11px;color:var(--accent-orange);font-weight:700;margin-bottom:8px;">768–1199px · TABLET</div>
+      <div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;">紧凑布局</div>
+      <ul style="font-size:12px;color:var(--text-muted);line-height:2;padding-left:16px;">
+        <li>双栏 Split 变为上下堆叠</li>
+        <li>侧边栏折叠为汉堡菜单</li>
+        <li>工具栏按钮折叠为「更多」</li>
+        <li>Diff 三栏变为单栏 Tab 切换</li>
+      </ul>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;">
+      <div style="font-size:11px;color:var(--accent-red);font-weight:700;margin-bottom:8px;">&lt; 768px · MOBILE</div>
+      <div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;">极简布局</div>
+      <ul style="font-size:12px;color:var(--text-muted);line-height:2;padding-left:16px;">
+        <li>仅保留编辑器 + Tree View Tab</li>
+        <li>侧边栏全屏抽屉</li>
+        <li>隐藏状态栏，改为 Toast</li>
+        <li>jq Playground 三栏变单栏</li>
+        <li>提示「建议使用横屏模式」</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ============================================ -->
+<!-- SECTION 7: 交付清单                           -->
+<!-- ============================================ -->
+<div class="wireframe-section">
+  <div class="section-tag tag-component">DELIVERABLES CHECKLIST</div>
+  <h2 class="section-title">七、Figma 交付清单</h2>
+  <p class="section-subtitle">你在 Figma 中需要产出的文件清单，按优先级排列</p>
+
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;">
+      <div style="font-size:14px;color:var(--accent);font-weight:700;margin-bottom:12px;">🎨 Figma 文件结构</div>
+      <ul style="font-size:13px;color:var(--text-muted);line-height:2.2;padding-left:16px;">
+        <li>📁 01_IA（信息架构流程图）</li>
+        <li>📁 02_Wireframes（所有页面线框）</li>
+        <li>📁 03_Design_System（设计系统）</li>
+        <li style="padding-left:16px;">├─ Colors（色板 + 语义色）</li>
+        <li style="padding-left:16px;">├─ Typography（字体规范）</li>
+        <li style="padding-left:16px;">├─ Spacing（间距比例）</li>
+        <li style="padding-left:16px;">├─ Components（组件库）</li>
+        <li style="padding-left:16px;">└─ Icons（图标集）</li>
+        <li>📁 04_Responsive（响应式变体）</li>
+        <li>📁 05_Prototypes（可交互原型）</li>
+      </ul>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;">
+      <div style="font-size:14px;color:var(--accent-green);font-weight:700;margin-bottom:12px;">✅ 交付检查清单</div>
+      <ul style="font-size:13px;color:var(--text-muted);line-height:2.2;padding-left:16px;">
+        <li>☐ 所有 7 个核心页面的线框图</li>
+        <li>☐ 每个页面的标注说明（Annots）</li>
+        <li>☐ 3 条核心交互流程的原型</li>
+        <li>☐ 完整设计令牌（颜色/字体/间距）</li>
+        <li>☐ 所有可复用组件的状态（默认/悬停/激活/禁用）</li>
+        <li>☐ 响应式断点（Desktop/Tablet/Mobile）</li>
+        <li>☐ 快捷键映射表</li>
+        <li>☐ 空状态 / 错误状态 / 加载状态</li>
+        <li>☐ 隐私声明弹窗设计</li>
+        <li>☐ Onboarding 引导流程</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Footer ===== -->
+<div class="footer">
+  JSON Studio — Wireframe Design Document v1.0<br>
+  Designed for Figma · 7 Pages · 6 Components · 3 Flows · 1 Design System<br>
+  <span style="color:var(--accent);">🔒 All data stays in the browser. No server. No tracking.</span>
+</div>
+
+</div><!-- /container -->
+
+</body>
+</html>

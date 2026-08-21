@@ -1,0 +1,45 @@
+{
+  "site": {
+    "name": "JSONDog",
+    "tagline": "JSON Online Toolkit",
+    "subtitle": "JSON-only, 100% in-browser, no upload, bilingual"
+  },
+  "nav": {
+    "tools": "Tools",
+    "blog": "Blog",
+    "cheatsheet": "Cheat Sheet",
+    "about": "About",
+    "github": "GitHub"
+  },
+  "home": {
+    "hero": "All-in-one JSON toolkit, runs entirely in your browser",
+    "heroSub": "Free · No signup · Your data never leaves your device",
+    "pasteHint": "Paste JSON, we'll pick the right tool",
+    "whyTitle": "Why JSONDog",
+    "faqTitle": "FAQ"
+  },
+  "tool": {
+    "input": "Input",
+    "output": "Output",
+    "run": "Run",
+    "copy": "Copy",
+    "download": "Download",
+    "upload": "Upload",
+    "clear": "Clear",
+    "sample": "Sample",
+    "copied": "Copied",
+    "indent": "Indent",
+    "chars": "chars",
+    "lines": "lines",
+    "nodes": "nodes",
+    "size": "size",
+    "valid": "Valid JSON",
+    "invalid": "Invalid JSON"
+  },
+  "category": {
+    "core": "Core",
+    "convert": "Convert",
+    "codegen": "Code Gen",
+    "advanced": "Advanced"
+  }
+}

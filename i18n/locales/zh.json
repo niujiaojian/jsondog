@@ -1,0 +1,45 @@
+{
+  "site": {
+    "name": "JSONDog",
+    "tagline": "JSON 在线工具箱",
+    "subtitle": "专注 JSON、纯前端、零上传、中英双语"
+  },
+  "nav": {
+    "tools": "工具",
+    "blog": "博客",
+    "cheatsheet": "速查表",
+    "about": "关于",
+    "github": "GitHub"
+  },
+  "home": {
+    "hero": "一站式 JSON 工具箱，全部在浏览器内运行",
+    "heroSub": "免费 · 无需注册 · 数据永不上传",
+    "pasteHint": "粘贴 JSON，自动识别工具",
+    "whyTitle": "为什么选择 JSONDog",
+    "faqTitle": "常见问题"
+  },
+  "tool": {
+    "input": "输入",
+    "output": "输出",
+    "run": "执行",
+    "copy": "复制",
+    "download": "下载",
+    "upload": "上传文件",
+    "clear": "清空",
+    "sample": "示例",
+    "copied": "已复制",
+    "indent": "缩进",
+    "chars": "字符",
+    "lines": "行",
+    "nodes": "节点",
+    "size": "大小",
+    "valid": "JSON 合法",
+    "invalid": "JSON 非法"
+  },
+  "category": {
+    "core": "核心工具",
+    "convert": "格式转换",
+    "codegen": "代码生成",
+    "advanced": "高级工具"
+  }
+}
