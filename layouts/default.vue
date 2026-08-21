@@ -11,6 +11,7 @@
           <NuxtLink to="/about" class="hover:text-jsonblue">关于</NuxtLink>
           <NuxtLink to="/privacy" class="hover:text-jsonblue">隐私</NuxtLink>
           <NuxtLink to="/changelog" class="hover:text-jsonblue">更新日志</NuxtLink>
+          <a href="https://bing.chatools.cn" target="_blank" rel="noopener" class="hover:text-jsonblue">每日一图</a>
           <a href="https://github.com" target="_blank" class="hover:text-jsonblue">GitHub</a>
         </div>
       </div>
