@@ -46,25 +46,25 @@ export const useTools = () => {
       id: 'yaml', name: 'JSON 转 YAML', nameEn: 'JSON to YAML',
       desc: 'JSON 与 YAML 双向转换',
       descEn: 'Convert JSON to YAML and back',
-      path: '/convert/yaml', category: 'convert', icon: 'mdi:swap-horizontal', soon: true
+      path: '/convert/yaml', category: 'convert', icon: 'mdi:swap-horizontal'
     },
     {
       id: 'xml', name: 'JSON 转 XML', nameEn: 'JSON to XML',
       desc: 'JSON 与 XML 双向转换',
       descEn: 'Convert JSON to XML and back',
-      path: '/convert/xml', category: 'convert', icon: 'mdi:swap-horizontal', soon: true
+      path: '/convert/xml', category: 'convert', icon: 'mdi:swap-horizontal'
     },
     {
       id: 'csv', name: 'JSON 转 CSV', nameEn: 'JSON to CSV',
       desc: 'JSON 与 CSV 双向转换',
       descEn: 'Convert JSON to CSV and back',
-      path: '/convert/csv', category: 'convert', icon: 'mdi:swap-horizontal', soon: true
+      path: '/convert/csv', category: 'convert', icon: 'mdi:swap-horizontal'
     },
     {
       id: 'jsonpath', name: 'JSONPath 查询', nameEn: 'JSONPath Tester',
       desc: '用 JSONPath 表达式查询 JSON',
       descEn: 'Query JSON with JSONPath expressions',
-      path: '/jsonpath', category: 'core', icon: 'mdi:search-web', soon: true
+      path: '/jsonpath', category: 'core', icon: 'mdi:search-web'
     },
     {
       id: 'typescript', name: 'JSON 转 TypeScript', nameEn: 'JSON to TypeScript',
@@ -118,7 +118,7 @@ export const useTools = () => {
       id: 'schema', name: 'JSON Schema', nameEn: 'JSON Schema',
       desc: '生成与校验 JSON Schema',
       descEn: 'Generate and validate JSON Schema',
-      path: '/schema', category: 'advanced', icon: 'mdi:shield-check-outline', soon: true
+      path: '/schema', category: 'advanced', icon: 'mdi:shield-check-outline'
     },
     {
       id: 'mock', name: 'JSON Mock 生成', nameEn: 'JSON Mock Generator',

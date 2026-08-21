@@ -24,7 +24,19 @@ const staticRoutes = [
   '/flatten',
   '/transform',
   '/visualize',
-  '/encode'
+  '/encode',
+  '/codegen/typescript',
+  '/codegen/go',
+  '/codegen/java',
+  '/codegen/csharp',
+  '/codegen/python',
+  '/codegen/sql',
+  '/codegen/mybatis',
+  '/convert/yaml',
+  '/convert/xml',
+  '/convert/csv',
+  '/jsonpath',
+  '/schema'
 ]
 
 const blogSlugs = readdirSync(resolve(root, 'content/blog'))

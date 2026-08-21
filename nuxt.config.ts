@@ -1,6 +1,9 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
+  build: {
+    transpile: ['js-yaml', 'papaparse', 'ajv', 'ajv-formats', 'jsonpath-plus', 'fast-xml-parser']
+  },
   modules: [
     '@element-plus/nuxt',
     '@nuxtjs/i18n',
@@ -100,6 +103,11 @@ export default defineNuxtConfig({
         '/codegen/python',
         '/codegen/sql',
         '/codegen/mybatis',
+        '/convert/yaml',
+        '/convert/xml',
+        '/convert/csv',
+        '/jsonpath',
+        '/schema',
         '/en',
         '/en/blog',
         '/en/cheatsheet',
