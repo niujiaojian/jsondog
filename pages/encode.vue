@@ -3,12 +3,12 @@
     <template #input>
       <div class="flex flex-col h-full">
         <div class="px-3 py-2 border-b border-jsonborder shrink-0">
-          <el-select v-model="mode" size="small">
-            <el-option label="Base64 编码" value="b64e" />
-            <el-option label="Base64 解码" value="b64d" />
-            <el-option label="URL 编码" value="urle" />
-            <el-option label="URL 解码" value="urld" />
-          </el-select>
+          <el-radio-group v-model="mode" size="small">
+            <el-radio-button label="b64e">Base64 编码</el-radio-button>
+            <el-radio-button label="b64d">Base64 解码</el-radio-button>
+            <el-radio-button label="urle">URL 编码</el-radio-button>
+            <el-radio-button label="urld">URL 解码</el-radio-button>
+          </el-radio-group>
         </div>
         <div class="flex-1 min-h-0">
           <JsonInput v-model="input" :samples="samples" placeholder="输入文本" @clear="input = ''" />
