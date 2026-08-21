@@ -9,6 +9,10 @@ const outPublic = resolve(root, '.output/public')
 const publicDir = resolve(root, 'public')
 
 if (!existsSync(outPublic)) {
+  if (existsSync(resolve(root, '.vercel/output'))) {
+    console.log('postbuild: Vercel preset detected, skipping (Vercel handles assets)')
+    process.exit(0)
+  }
   console.error('postbuild: .output/public not found, run nuxt build first')
   process.exit(1)
 }
